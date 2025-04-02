@@ -1,0 +1,44 @@
+redis-cluster:
+  enabled: false
+redis:
+  enabled: false
+postgresql:
+  enabled: false
+postgresql-ha:
+  enabled: false
+
+# Enable persistence for production
+persistence:
+  enabled: true
+  storageClass: "standard" # Adjust based on your cluster's storage classes
+
+# Enable MySQL and set root password
+mysql:
+  enabled: true
+  mysqlRootPassword: "YourSecureRootPassword123!" # Replace with a strong password
+
+gitea:
+  config:
+    database:
+      DB_TYPE: mysql
+      HOST: gitea-mysql:3306 # MySQL service name (from Helm chart dependency)
+      NAME: gitea
+      USER: root
+      PASSWD: "YourSecureRootPassword123!" # Same as mysqlRootPassword
+    session:
+      PROVIDER: mysql
+    cache:
+      ADAPTER: redis
+    queue:
+      TYPE: redis
+
+# Configure Ingress for public access
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  hosts:
+    - host: gitea.example.com # Replace with your domain
+      paths:
+        - path: /
+          pathType: Prefix

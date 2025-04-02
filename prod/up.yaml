@@ -1,11 +1,21 @@
 ---
-- hosts: localhost
+- name: Apply MySQL Kubernetes Deployment
+  hosts: localhost
+  connection: local  
+  gather_facts: no    
+
   tasks:
-  - name: "Install kubernetes python package"
-    pip:
-      name: kubernetes
-      state: present
-  - name: install mysql
-    kubernetes.core.k8s:
-      state: present
-      src: mysql.yaml
+    - name: Ensure kubernetes Python client is installed
+      pip:
+        name: kubernetes
+        state: present
+
+    - name: Apply MySQL deployment manifest
+      kubernetes.core.k8s:
+        state: present
+        src: mysql.yaml
+
+    - name: Apply Gitea manifest
+      kubernetes.core.k8s:
+        state: present
+        src: gitea.yaml
